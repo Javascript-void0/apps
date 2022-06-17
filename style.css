@@ -39,8 +39,8 @@ body {
 }
 
 #icon {
-    -webkit-mask: url(/apps/images/IcTwotoneApps.svg) no-repeat center;
-    mask: url(/apps/images/IcTwotoneApps.svg) no-repeat center;
+    -webkit-mask: url(/apps/images/apps.svg) no-repeat center;
+    mask: url(/apps/images/apps.svg) no-repeat center;
     transform: scale(2);
     background-color: rgb(var(--c2));
     width: 40px;
