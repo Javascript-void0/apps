@@ -20,21 +20,21 @@
 }
 
 #hash {
-    -webkit-mask: url(../images/hash.svg) no-repeat center;
+    -webkit-mask: url(./images/hash.svg) no-repeat center;
     mask: url(../images/hash.svg) no-repeat center;
     background-color: rgb(var(--c2), 1);
     height: 50px;
 }
 
 #square {
-    -webkit-mask: url(../images/square.svg) no-repeat center;
+    -webkit-mask: url(./images/square.svg) no-repeat center;
     mask: url(../images/square.svg) no-repeat center;
     background-color: rgb(var(--c2), 1);
     height: 50px;
 }
 
 #calculator {
-    -webkit-mask: url(../images/calculator.svg) no-repeat center;
+    -webkit-mask: url(./images/calculator.svg) no-repeat center;
     mask: url(../images/calculator.svg) no-repeat center;
     background-color: rgb(var(--c2), 1);
     height: 50px;
