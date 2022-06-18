@@ -39,3 +39,10 @@
     background-color: rgb(var(--c2), 1);
     height: 50px;
 }
+
+#christmas-tree {
+    -webkit-mask: url(/apps/images/christmas-tree.svg) no-repeat center;
+    mask: url(/apps/images/christmas-tree.svg) no-repeat center;
+    background-color: rgb(var(--c2), 1);
+    height: 50px;
+}
