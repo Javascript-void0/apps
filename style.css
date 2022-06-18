@@ -26,6 +26,20 @@ body {
     background-color: rgb(var(--c1));
 }
 
+::-moz-selection {
+    color: rgb(var(--c2));
+    background-color: rgb(var(--c1));
+}
+
+::selection {
+    color: rgb(var(--c1));
+    background-color: rgb(var(--c2));
+}
+
+br {
+    user-select: none;
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 10px;
