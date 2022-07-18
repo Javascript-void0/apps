@@ -46,3 +46,10 @@
     background-color: rgb(var(--c2), 1);
     height: 50px;
 }
+
+#triangle-inverted {
+    -webkit-mask: url(/apps/images/triangle-inverted.svg) no-repeat center;
+    mask: url(/apps/images/triangle-inverted.svg) no-repeat center;
+    background-color: rgb(var(--c2), 1);
+    height: 50px;
+}
