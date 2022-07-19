@@ -10,45 +10,38 @@
 </head>
 <body>
     <div class="center">
-        
         <script src="/apps/js/template.js" onload="insertHeader()"></script>
 
         <div class="content">
-            <h2 class="tier-header">> TIER-1: BEGINNER PROJECTS</h2><hr><br>
-            
-            <div class="tier">
 
+            <script> // Categories
+                var cats = []
+            </script>
+
+            <h2 class="tier-header">> GAMES</h2><hr><br>
+            <div class="tier" id="0">
                 <script>
-                    const apps = [
+                    apps = [
+                        ['snake', 'apple-arcade']
+                    ]
+                    loadBlocks(apps, 0, 'games')
+                </script>
+            </div>
+
+            <h2 class="tier-header">> TIER-1: BEGINNER PROJECTS</h2><hr><br>
+            <div class="tier" id="1">
+                <script>
+                    apps = [
                         ['bin2dec', 'hash'],
                         ['border-radius-previewer', 'square'],
                         ['calculator', 'calculator'],
                         ['christmas-lights', 'christmas-tree']
                     ]
-
-                    for (i = 0; i < apps.length; i++) {
-                        name = apps[i][0]
-                        icon = apps[i][1]
-
-                        html = `
-                        <div class="page">
-                            <div class="page-icon" id="${icon}">a</div>
-                            ${name}
-                        </div>
-                        `
-                        link = document.createElement('a')
-                        link.href = "/apps/tier-i/" + name
-                        link.innerHTML = html
-
-                        tier = document.getElementsByClassName('tier')[0]
-                        tier.append(link)
-                    }
+                    loadBlocks(apps, 1, 'tier-i')
                 </script>
-
             </div>
             
             <h2 class="tier-header">> TIER-2: INTERMEDIATE PROJECTS</h2><hr><br>
-            
             <div class="tier">
                 <a href="/apps">
                     <div class="page">
@@ -57,7 +50,6 @@
             </div>
             
             <h2 class="tier-header">> TIER-3: ADVANCED PROJECTS</h2><hr><br>
-            
             <div class="tier">
                 <a href="/apps#tier-3">
                     <div class="page">
@@ -65,6 +57,7 @@
                     </div>
                 </a>
             </div>
+
             <div class="footer">
                 Icons: <a href='https://tablericons.com/' target='_blank' rel='noopener nonreferrer'>Tabler Icons</a>
             </div>            
