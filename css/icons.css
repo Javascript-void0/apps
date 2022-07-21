@@ -60,3 +60,10 @@
     background-color: rgb(var(--c2), 1);
     height: 50px;
 }
+
+#grid {
+    -webkit-mask: url(/apps/images/grid.svg) no-repeat center;
+    mask: url(/apps/images/grid.svg) no-repeat center;
+    background-color: rgb(var(--c2), 1);
+    height: 50px;
+}
