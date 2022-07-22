@@ -1,10 +1,10 @@
 var gridSize = 10;
-// var started = false
 var started = false
 
 var startEle = document.getElementById('start')
 if (startEle == null) {
     started = true
+    if (playing) { playPause() }
 }
 
 function start() {
@@ -27,15 +27,6 @@ function drawGrid() {
             square.setAttribute('state', 'dead')
             square.setAttribute('x', x)
             square.setAttribute('y', y)
-            square.onclick = e => {
-                if (playing) { return }
-                if (e.target.attributes['state'].value == 'dead') {
-                    e.target.setAttribute('state', 'live')
-                    push3x3(e.target, needUpdate)
-                } else {
-                    e.target.setAttribute('state', 'dead')
-                }
-            }
             grid.append(square)
         }
     }
@@ -43,6 +34,25 @@ function drawGrid() {
     grid.style.gridTemplateColumns = `repeat(${gridX}, ${gridSize}px)`
     grid.style.gridTemplateRows = `repeat(${gridY}, ${gridSize}px)`
 }
+
+function mousePos(e) {
+    if (!started) { return }
+    mouseX = e.clientX
+    mouseY = e.clientY
+    gridX = (mouseX - (mouseX % gridSize)) / gridSize
+    gridY = (mouseY - (mouseY % gridSize)) / gridSize
+
+    element = document.getElementById(`${gridX}, ${gridY}`)
+    if (playing) { return }
+    if (element.attributes['state'].value == 'dead') {
+        element.setAttribute('state', 'live')
+        push3x3(element, needUpdate)
+    } else {
+        element.setAttribute('state', 'dead')
+    }
+}
+
+document.addEventListener('click', mousePos)
 
 var playing = false;
 
@@ -61,12 +71,45 @@ function playPause() {
     }
 }
 
+var save;
+var saveNeedUpdate = [];
+
+save = sessionStorage.getItem('save')
+if (save == null) {
+    save = null
+}
+saveNeedUpdate = sessionStorage.getItem('saveNeedUpdate');
+if (saveNeedUpdate == null) {
+    saveNeedUpdate = []
+} else {
+    saveNeedUpdate = JSON.parse(saveNeedUpdate)
+    for (id in saveNeedUpdate) {
+        x = (saveNeedUpdate[id]).split(', ')[0]
+        y = (saveNeedUpdate[id]).split(', ')[1]
+        saveNeedUpdate[id] = document.getElementById(`${x}, ${y}`)
+    }
+}
+
 function resetGrid() {
-    playing = false
+    if (playing) { playPause() }
+    if (typeof save !== 'undefined' && save !== null) {
+        grid = document.getElementsByClassName('grid')[0]
+        grid.innerHTML = save
+    }
+    needUpdate = []
+    squares = document.getElementsByClassName('square')
+    for (square of squares) {
+        if (square.attributes['state'].value == 'live') {
+            needUpdate.push(square)
+            needUpdate = push3x3(square, needUpdate)
+        }
+    }
 }
 
 function saveGrid() {
-
+    grid = document.getElementsByClassName('grid')[0]
+    save = grid.innerHTML
+    sessionStorage.setItem('save', save)
 }
 
 function clearGrid() {
@@ -78,6 +121,7 @@ function clearGrid() {
             square.removeAttribute('next-generation')
         }
     }
+    needUpdate = []
 }
 
 var needUpdate = []
