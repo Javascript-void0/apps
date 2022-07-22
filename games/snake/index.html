@@ -31,15 +31,25 @@
                         }
                     </script>
                 </div>
-                <div class="score">
-                    Score: 
-                    <br>
-                    <br>
-                    <div id="score">
-                        0
+                <div class="menu">
+                    <div class="left">
+                        <div class="score">
+                            Score: 0
+                        </div>
+                        <div id="message">Press Any <br>Key to Start</div>
                     </div>
+                    <div class="controls">
+                        <div class="empty"></div>
+                        <div class="button" onclick="changeDirection([0, -1])" style="transform: rotate(-90deg)">></div>
+                        <div class="empty"></div>
+                        <div class="button" onclick="changeDirection([-1, 0])" style="transform: rotate(180deg)">></div>
+                        <div class="empty"></div>
+                        <div class="button" onclick="changeDirection([1, 0])">></div>
+                        <div class="empty"></div>
+                        <div class="button" onclick="changeDirection([0, 1])" style="transform: rotate(90deg)">></div>
+                        <div class="empty"></div>
                 </div>
-                <div id="message">Press Any Key to Start</div>
+                </div>
             </div>
         </div>
     </div>
@@ -54,7 +64,7 @@
             border-radius: 10px;
             border: 1px solid rgb(var(--c2), 0.25);
             box-shadow: 0px 10px 25px #1e1e1e;
-            text-align: center;
+            /* text-align: center; */
             padding-top: 20px;
             color: rgb(var(--c2));
         }
@@ -76,7 +86,6 @@
             color:rgb(var(--c1));
             font-size: 22px;
             line-height: 78%;
-            
         }
 
         .apple {
@@ -89,11 +98,40 @@
 
         .score {
             padding-top: 30px;
+            padding-left: 20px;
+            text-align: center;
         }
 
         #message {
             padding-top: 20px;
+            padding-left: 20px;
             font-family: Envy Code R;
+            text-align: center;
+        }
+
+        .controls {
+            width: 100px;
+            margin-top: 20px;
+            height: 100px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            margin-left: 20px;
+        }
+
+        .button {
+            background-color: rgb(var(--c2));
+            border-radius: 10px;
+            color: rgb(var(--c1));
+            font-size: 28px;
+            text-align: center;
+            user-select: none;
+            cursor: pointer
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
         }
 
         * {
@@ -117,8 +155,7 @@
                 playing = true
                 newGame()
                 update()
-            }
-            else if ((event.keyCode == 37 || event.keyCode == 65) && !direction[0] && updated) { // Left
+            } else if ((event.keyCode == 37 || event.keyCode == 65) && !direction[0] && updated) { // Left
                 direction = [-1, 0]
                 updated = false
             } else if ((event.keyCode == 38 || event.keyCode == 87) && !direction[1] && updated) { // Up
@@ -132,6 +169,21 @@
                 updated = false
             }
         })
+
+        function changeDirection(dir) {
+            console.log(dir)
+            if (!playing) {
+                playing = true
+                newGame()
+                update()
+            } else if ((dir[0] == -1 || dir[0] == 1) && !direction[0] && updated) {
+                direction = [...dir]
+                updated = false
+            } else if ((dir[1] == -1 || dir[1] == 1) && !direction[1] && updated) {
+                direction = [...dir]
+                updated = false
+            }
+        }
 
         function draw() {
             squares = document.getElementsByClassName('square')
@@ -244,8 +296,8 @@
         }
 
         function updateScore() {
-            div = document.getElementById('score')
-            div.textContent = score
+            div = document.getElementsByClassName('score')[0]
+            div.textContent = 'Score: ' + score
         }
 
         function message(message) {
