@@ -31,6 +31,7 @@ function drawGrid() {
                 if (playing) { return }
                 if (e.target.attributes['state'].value == 'dead') {
                     e.target.setAttribute('state', 'live')
+                    push3x3(e.target, needUpdate)
                 } else {
                     e.target.setAttribute('state', 'dead')
                 }
@@ -79,16 +80,15 @@ function clearGrid() {
     }
 }
 
+var needUpdate = []
+
 var play = window.setInterval(function() {
-    var squares = document.getElementsByClassName('square')
+    // var squares = document.getElementsByClassName('square')
     if (playing) {
-        for (square of squares) {
-            var x = parseInt(square.attributes['x'].value)
-            var y = parseInt(square.attributes['y'].value)
+        for (square of needUpdate) {
             var state = square.attributes['state'].value
 
-            var neighbors = getNeighbors(x, y)
-
+            var neighbors = getNeighbors(square)
             var liveNeighbors = 0;
             for (neighbor of neighbors) { // get neighbor states
                 if (neighbor !== null) { // wall / offscreen
@@ -118,15 +118,25 @@ var play = window.setInterval(function() {
             }
         }
 
-        for (square of squares) { // next generation
+        var nextGenerationNeedUpdate = []
+
+        for (square of needUpdate) { // next generation
             if (square.hasAttribute('next-generation')) {
                 square.setAttribute('state', square.attributes['next-generation'].value)
+
+                if (square.attributes['state'].value == 'live') {
+                    nextGenerationNeedUpdate = push3x3(square, nextGenerationNeedUpdate)
+                }
             }
         }
-    }
-}, 50);
 
-function getNeighbors(x, y) {
+        needUpdate = [...nextGenerationNeedUpdate]
+    }
+}, 10);
+
+function getNeighbors(element) {
+    var x = parseInt(element.attributes['x'].value)
+    var y = parseInt(element.attributes['y'].value)
     var neighbors = []
     neighbors.push(document.getElementById(`${x}, ${y-1}`))
     neighbors.push(document.getElementById(`${x}, ${y+1}`))
@@ -137,4 +147,20 @@ function getNeighbors(x, y) {
     neighbors.push(document.getElementById(`${x+1}, ${y-1}`))
     neighbors.push(document.getElementById(`${x+1}, ${y+1}`))
     return neighbors
+}
+
+function push3x3(element, list) {
+    var startX = parseInt(element.attributes['x'].value) - 1
+    var startY = parseInt(element.attributes['y'].value) - 1
+    for (y = 0; y < 3; y++) {
+        for (x = 0; x < 3; x++) {
+            square = document.getElementById(`${startX + x}, ${startY + y}`)
+            if (square !== null) { // wall / offscreen
+                if (!list.some(e => e.id === square.id)) {
+                    list.push(square)
+                }
+            }
+        }
+    }
+    return list
 }
