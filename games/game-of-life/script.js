@@ -1,8 +1,16 @@
 var gridSize = 10;
+// var started = false
+var started = false
+
+var startEle = document.getElementById('start')
+if (startEle == null) {
+    started = true
+}
 
 function start() {
     var start = document.getElementById('start')
-    start.style.display = 'none'
+    start.remove()
+    started = true
 }
 
 function drawGrid() {
@@ -38,6 +46,7 @@ function drawGrid() {
 var playing = false;
 
 function playPause() {
+    if (!started) { return }
     btn = document.getElementById('playing')
     if (playing) {
         playing = false
@@ -60,7 +69,7 @@ function saveGrid() {
 }
 
 function clearGrid() {
-    playing = false
+    if (playing) { playPause() }
     squares = document.getElementsByClassName('square')
     for (square of squares) {
         if (square.attributes['state'].value == 'live') {
@@ -78,15 +87,7 @@ var play = window.setInterval(function() {
             var y = parseInt(square.attributes['y'].value)
             var state = square.attributes['state'].value
 
-            var neighbors = []
-            neighbors.push(document.getElementById(`${x}, ${y-1}`))
-            neighbors.push(document.getElementById(`${x}, ${y+1}`))
-            neighbors.push(document.getElementById(`${x-1}, ${y}`))
-            neighbors.push(document.getElementById(`${x+1}, ${y}`))
-            neighbors.push(document.getElementById(`${x-1}, ${y-1}`))
-            neighbors.push(document.getElementById(`${x-1}, ${y+1}`))
-            neighbors.push(document.getElementById(`${x+1}, ${y-1}`))
-            neighbors.push(document.getElementById(`${x+1}, ${y+1}`))
+            var neighbors = getNeighbors(x, y)
 
             var liveNeighbors = 0;
             for (neighbor of neighbors) { // get neighbor states
@@ -100,20 +101,23 @@ var play = window.setInterval(function() {
             // square.textContent = liveNeighbors
             // console.log(liveNeighbors)
 
-            if (state == 'live') {
-                if (liveNeighbors < 2 || liveNeighbors > 3) {
-                    square.setAttribute('next-generation', 'dead')
-                } else {
-                    square.setAttribute('next-generation', 'live')
-                }
-            } else if (state == 'dead') {
+            if (state == 'dead') {
                 if (liveNeighbors == 3) {
                     square.setAttribute('next-generation', 'live')
                 } else {
                     square.setAttribute('next-generation', 'dead')
                 }
             }
+
+            if (state == 'live') {
+                if (liveNeighbors < 2 || liveNeighbors > 3) {
+                    square.setAttribute('next-generation', 'dead')
+                } else {
+                    square.setAttribute('next-generation', 'live')
+                }
+            }
         }
+
         for (square of squares) { // next generation
             if (square.hasAttribute('next-generation')) {
                 square.setAttribute('state', square.attributes['next-generation'].value)
@@ -121,3 +125,16 @@ var play = window.setInterval(function() {
         }
     }
 }, 50);
+
+function getNeighbors(x, y) {
+    var neighbors = []
+    neighbors.push(document.getElementById(`${x}, ${y-1}`))
+    neighbors.push(document.getElementById(`${x}, ${y+1}`))
+    neighbors.push(document.getElementById(`${x-1}, ${y}`))
+    neighbors.push(document.getElementById(`${x+1}, ${y}`))
+    neighbors.push(document.getElementById(`${x-1}, ${y-1}`))
+    neighbors.push(document.getElementById(`${x-1}, ${y+1}`))
+    neighbors.push(document.getElementById(`${x+1}, ${y-1}`))
+    neighbors.push(document.getElementById(`${x+1}, ${y+1}`))
+    return neighbors
+}

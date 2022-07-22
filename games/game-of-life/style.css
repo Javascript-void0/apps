@@ -50,8 +50,8 @@ body {
 .square {
     border-top: 1px solid var(--c1);
     border-left: 1px solid var(--c1);
-    padding-top: 1px;
     text-align: center;
+    font-size: 6px;
 }
 
 .square[state="dead"] {
